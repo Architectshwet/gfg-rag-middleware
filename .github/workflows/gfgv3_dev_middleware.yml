@@ -1,0 +1,37 @@
+name: GFGV3 DEV MIDDLEWARE
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_type:
+        description: 'Deploy from tag or branch'
+        required: true
+        type: choice
+        options:
+          - tag
+      tag_name:
+        description: 'Tag to deploy required if source_type=tag'
+        required: false
+        type: string
+jobs:
+  pipepline:
+    # #uses: quant-eng/git-action-test/.github/workflows/build-deploy.yml@main
+    uses: quant-infra/deployment-pipelines/.github/workflows/deploy-dev.yml@main
+    secrets:
+      Q_DEV_OPS_AWS_ACCESS_KEY_ID_DEPLOY: ${{ secrets.Q_DEV_OPS_AWS_ACCESS_KEY_ID_ORG_ENG }}
+      Q_DEV_OPS_AWS_SECRET_ACCESS_KEY_DEPLOY: ${{ secrets.Q_DEV_OPS_AWS_SECRET_ACCESS_KEY_ORG_ENG }}
+      Q_DEV_OPS_ECR_REPO_URI_DEPLOY: ${{ secrets.Q_DEV_OPS_ECR_REPO_URI_ORG_ENG }}
+      Q_DEV_AWS_USER: ${{ secrets.AWS_USER_ORG_ENG }}
+      Q_DEV_BS_AWS_PRIVATE_KEY: ${{ secrets.DEV_AWS_PRIVATE_KEY_ORG }}
+      Q_DEV_BS2_HOST: ${{ secrets.DEV_AWS_BASTION_HOST_ORG }}
+      Q_UTIL01_DEV_HOST: ${{ secrets.UTIL01_DEV_HOST_ORG_ENG }}
+    with:
+      repo_name: ${{ github.event.repository.name }}
+      repo_full: ${{ github.repository }}
+      git_ref:   ${{ inputs.git_ref }}
+      project_name: gfgv3
+      environment: dev
+      service: middleware
+      docker_file_dir: Dockerfile
+      source_type: ${{ github.event.inputs.source_type }}
+      tag_name: ${{ github.event.inputs.tag_name }}

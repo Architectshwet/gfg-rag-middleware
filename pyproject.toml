@@ -1,0 +1,54 @@
+[project]
+name = "gfg-middleware"
+version = "0.1.0"
+description = ""
+authors = [
+    { name = "Haswanth Aekula", email = "haswanth.aekula@quant.ai" },
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.124.2",
+    "motor>=3.7.1",
+    "pydantic>=2.12.5",
+    "pydantic-settings>=2.12.0",
+    "pymongo>=4.15.5",
+    "uvicorn[standard]>=0.38.0",
+    "xmltodict>=1.0.2",
+    "openai>=1.58.1",
+    "httpx>=0.28.1",
+    "qdrant-client>=1.7.0",
+    "python-dotenv>=1.0.0",
+    "rank-bm25>=0.2.2"
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.8",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # Pyflakes
+    "I",      # isort
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "UP",     # pyupgrade
+]
+ignore = [
+    "E501",   # line too long (handled by formatter)
+    "B008",   # do not perform function calls in argument defaults
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

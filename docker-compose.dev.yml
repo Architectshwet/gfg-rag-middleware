@@ -1,0 +1,16 @@
+services:
+  gfg-middleware:
+    build: .
+    container_name: gfg-middleware
+    ports:
+      - "8001:8001"  # FastAPI server
+    env_file:
+      - .env
+    restart: unless-stopped
+    command: ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]  # --reload for dev
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/middleware/health"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
